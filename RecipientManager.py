@@ -1,15 +1,18 @@
+import LogManager
+
+
 def debug_get_recipients():
-    with open('Emails/Recipients.txt', 'r') as file:
+    with open('Data/Recipients.txt', 'r') as file:
         emails = file.readlines()
     return emails
 
 def get_emails():
-    with open('Emails/Recipients.txt', 'r') as file:
+    with open('Data/Recipients.txt', 'r') as file:
         emails = [line.strip() for line in file.readlines()]
     return emails
 
 def add_recipient(insertion_email):
-    with open('Emails/Recipients.txt', 'r') as file:
+    with open('Data/Recipients.txt', 'r') as file:
         emails = file.readlines()
 
     exists = False
@@ -18,15 +21,15 @@ def add_recipient(insertion_email):
             exists = True
 
     if(not exists):
-        with open('Emails/Recipients.txt', 'a') as file:
+        with open('Data/Recipients.txt', 'a') as file:
             file.write(insertion_email+'\n')
-        print("Successfully added "+ insertion_email + " to recipient list")
+        LogManager.Log("SUCCESFULLY ADDED '"+ insertion_email + "' TO RECIPIENT LIST")
     else:
-        print("email already exists")
+        LogManager.Log("EMAIL TO ADD TO RECIPIENT LIST ALREADY EXISTS '" + insertion_email + "'")
 
 
 def remove_recipient(removal_email):
-    with open('Emails/Recipients.txt', 'r') as file:
+    with open('Data/Recipients.txt', 'r') as file:
         emails = file.readlines()
 
     removed = False
@@ -34,10 +37,10 @@ def remove_recipient(removal_email):
         if(emails[index].strip().__eq__(removal_email)):
             del emails[index]
             removed = True
-            with open('Emails/Recipients.txt', 'w') as file:
+            with open('Data/Recipients.txt', 'w') as file:
                 file.writelines(emails)
             break
     if(removed):
-        print("Successfully removed " + removal_email + " from the Recipient list")
+        LogManager.Log("SUCCESSFULLY REMOVED '" + removal_email + "' FROM RECIPIENT LIST")
     else:
-        print(removal_email + " does not exist in Recipient list")
+        LogManager.Log("EMAIL TO REMOVE FROM RECIPIENT LIST DOES NOT EXIST '" + removal_email + "'")

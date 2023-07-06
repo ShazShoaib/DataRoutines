@@ -7,9 +7,12 @@ from email.mime.base import MIMEBase
 from email import encoders
 import Encryption
 import RecipientManager
+import LogManager
 
-
+#send a single email
 def send_email(sender_email, sender_password, recipient_email, subject, message, file_path, image_path):
+    LogManager.Log("SENDING EMAIL '" + subject + "' TO '" + recipient_email + "'")
+
     # Set up the SMTP server
     smtp_server = 'smtp.gmail.com'  # Change this if using a different email provider
     smtp_port = 587  # Change this if using a different email provider
@@ -50,10 +53,11 @@ def send_email(sender_email, sender_password, recipient_email, subject, message,
         # Clean up the connection
         server.quit()
 
-        print("Email sent successfully!")
+        LogManager.Log("EMAIL "+ subject +" SUCCESSFULLY SENT TO " + recipient_email)
     except Exception as e:
-        print("Error sending email:", str(e))
+        LogManager.Log("ERROR SENDING " + subject + " EMAIL TO " + recipient_email, str(e))
 
+#send email to all emails in the recipient list
 def Send_Routine_Emails():
     sender_cred = Encryption.read_sender_credentials()
     sender_email = sender_cred[0]
@@ -61,19 +65,19 @@ def Send_Routine_Emails():
     recipient_emails = RecipientManager.get_emails()
 
     for recipient_email in recipient_emails:
-        print('Sending to: '+ recipient_email)
         send_email(sender_email, sender_password, recipient_email, subject, message, file_path, image_path)
 
+#send email to all emails in the list provided (in the context of this program, the provided list will be a subset of the recipient list)
 def Send_Emails(recipient_emails):
     sender_cred = Encryption.read_sender_credentials()
     sender_email = sender_cred[0]
     sender_password = sender_cred[1]
 
     for recipient_email in recipient_emails:
-        print('Sending to: ' + recipient_email)
         send_email(sender_email, sender_password, recipient_email, subject, message, file_path, image_path)
 
 
+#variables and setters to set email content
 subject = 'Test Email'
 message = 'This is a test email.'
 file_path = ''  # Replace with the path to your file attachment (optional)
