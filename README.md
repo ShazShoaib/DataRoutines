@@ -12,7 +12,8 @@ Utilize both SQL and Windows Authentication for Database Connection\
 Save Encryped Credentials for Senders Email\
 Save Encrypted Credentials for both SQL Connnection methods\
 Save Recipient emails as plaintext\
-Utilize Multithreading in order to avoid freezing the program while querying data from database
+Utilize Multithreading in order to avoid freezing the program while querying data from database\
+Utilize Multithreading to send emails in parrallel to speed up the overall process
 
 # Libraries utilized
 tkinter\
