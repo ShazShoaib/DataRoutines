@@ -1,5 +1,6 @@
 import os
 import smtplib
+import threading
 from email.mime.image import MIMEImage
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -73,9 +74,17 @@ def Send_Emails(recipient_emails):
     sender_email = sender_cred[0]
     sender_password = sender_cred[1]
 
+    threads = []
     for recipient_email in recipient_emails:
-        send_email(sender_email, sender_password, recipient_email, subject, message, file_path, image_path)
+        thread = threading.Thread(target=send_email, args=(sender_email, sender_password, recipient_email, subject, message, file_path, image_path))
+        thread.start()
+        threads.append(thread)
 
+    # Wait for all threads to finish
+    for thread in threads:
+        thread.join()
+
+    LogManager.Log("ALL EMAILS SENT")
 
 #variables and setters to set email content
 subject = 'Test Email'
